@@ -1,0 +1,26 @@
+apiVersion: db.atlasgo.io/v1alpha1
+kind: AtlasSchema
+metadata:
+  name: demodb
+spec:
+  # Load the URL of the target database from a Kubernetes secret.
+  urlFrom:
+    secretKeyRef:
+      key: url
+      name: pg-credentials
+  # Define the desired schema of the target database. This can be defined in either
+  # plain SQL like this example or in Atlas HCL.
+  schema:
+    sql: |
+      create table fruits (
+        id   serial primary key,
+        name varchar(255) not null,
+        season varchar(255) not null
+      );
+  # Define policies that control how the operator will apply changes to the target database.
+  policy:
+    # Define a policy that will stop the reconciliation loop if the operator detects
+    # a destructive change such as dropping a column or table.
+    lint:
+      destructive:
+        error: true

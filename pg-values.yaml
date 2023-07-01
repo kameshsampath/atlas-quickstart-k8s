@@ -1,0 +1,5 @@
+auth:
+  postgresPassword: superS3cret!
+  username: demo
+  password: demoPassword123
+  database: demodb
